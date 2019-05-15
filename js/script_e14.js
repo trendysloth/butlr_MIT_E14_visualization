@@ -235,7 +235,7 @@ d3.csv("js/example.csv", function(datapoints) {
         // console.log(d)
         if (d.price !== '' &&  d.price !== '0' && d.price !== 'NOT THERE YET') {
             // console.log(d.price)
-            return formatMoney(d.price).toString() + " [" + (d.price / total_sum).toFixed(3).toString() + "%]"
+            return formatMoney(d.price).toString() + " [" + (d.price / total_sum * 100).toFixed(2).toString() + "%]"
         }
     })
     .attr("x", function(d) {
