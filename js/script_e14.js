@@ -309,6 +309,7 @@ d3.csv("js/e14participation.csv", function(datapoints) {
             return yScale(parseInt(d.price))
         }
     })
+    .attr("dy", "2px")
     .attr("font_family", "sans-serif")  // Font type
     .attr("font-size", "9px")  // Font size
     .attr("fill", function(d) { 
