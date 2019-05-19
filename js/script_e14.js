@@ -113,9 +113,6 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     var width = window.innerWidth - margin.left - margin.right
     var height = window.innerHeight - margin.top - margin.bottom
 
-    var radius = Math.min(width, height) / 6
-    var duration = 250;
-
     var lineOpacity = "1.0";
     var lineOpacityHover = "1.0";
     var otherLinesOpacityHover = "1.0";
@@ -205,87 +202,6 @@ d3.csv("js/e14participation.csv", function(datapoints) {
         })
     .attr("transform", "translate(" + xScale.bandwidth() / 2 + ",0)");
 
-
-    var e_14_total = 0
-    var pie_chart_data_2 = []
-
-    /* Add circles in the line */
-    // svg.selectAll("circle")
-    // .data(data, function(d, i) {
-    //     for (let i = 0; i < d.values.length; i ++) {
-    //         if (d.values[i].price !== '0' && d.values[i].price !== 'NOT THERE YET') {
-    //             e_14_total = e_14_total + parseInt(d.values[i].price)
-    //         }
-    //     }
-    //     let curr_obj = {age: "total", population: e_14_total}
-
-    //     for (let i = 0; i < d.values.length; i ++) {
-    //         // console.log(d.values[i].date)
-    //         if (d.values[i].price !== '0' && d.values[i].price !== 'NOT THERE YET') {
-    //             e_14_total = e_14_total + parseInt(d.values[i].price)
-    //             pie_chart_data_2.push([{age: d.name, phrase: d.values[i].date, population: parseInt(d.values[i].price)}, curr_obj])
-    //         }
-    //     }
-    // })
-    // .enter()
-    // .append("g")
-    // .style("fill", function(d, i) {
-    //     if (d.price !== '0' && d.price !== 'NOT THERE YET') {
-    //         return color(i)
-    //     }
-    // })
-    // .selectAll("circle")
-    // .data(d => d.values)
-    // .enter()
-    // .append("g")
-    // .attr("class", "circle")  
-    // .append("circle")
-    // .attr("cx", function(d, i) {
-    //     console.log(d)
-    //     return xScale(d.date)
-    // })
-    // .attr("cy", function(d, i) {
-    //     if (d.price !== '' && d.price !== '0' && d.price !== 'NOT THERE YET') {
-    //         return yScale(d.price)
-    //     }
-    // })
-    // .attr("r", function(d, i) {
-    //     console.log(d)
-    //     // if (d.price !== '' && d.price !== '0' && d.price !== 'NOT THERE YET') {
-    //     //     if (flatten_e14_data[i].price !== '0' && flatten_e14_data[i].price !== 'NOT THERE YET') {
-    //     //         return rScale(parseInt(flatten_e14_data[i].price))
-    //     //     } 
-    //     //     if (flatten_e14_data[i].price === '0') {
-    //     //         return rScale(parseInt(0.000001))
-    //     //     }
-    //     // }
-    // })
-    // .style('opacity', circleOpacity)
-    // .on("mouseover", function(d) {
-    //     d3.select(this)
-    //     .transition()
-    //     .duration(duration)
-    //     .attr("r", circleRadiusHover);
-    // })
-    // .on("mouseout", function(d) {
-    //     d3.select(this) 
-    //     .transition()
-    //     .duration(duration)
-    //     .attr("r", function(d, i) {
-    //         // yScale(d.price)
-    //         if (d.price !== '' && d.price !== '0' && d.price !== 'NOT THERE YET') {
-    //             if (flatten_e14_data[i].price !== '0' && flatten_e14_data[i].price !== 'NOT THERE YET') {
-    //                 return rScale(parseInt(flatten_e14_data[i].price))
-    //             } else {
-    //                 return rScale(parseInt(0.000001))
-    //             }
-                
-    //         }
-    //     });  
-    // })
-    // .attr("transform", "translate(" + xScale.bandwidth() / 2 + ",0)")
-    
-    // console.log(flatten_data)
     svg.selectAll("circle")
     .data(flatten_data)
     .enter()
@@ -339,10 +255,7 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     //         }
     //     });  
     // })
-    
-
-
-    
+        
     svg.selectAll("text")
     .data(flatten_data)
     .enter()
@@ -351,14 +264,7 @@ d3.csv("js/e14participation.csv", function(datapoints) {
         // console.log(flatten_e14_data)
         if (d.price !== '' &&  d.price !== '0' && d.price !== 'NOT THERE YET') {
             let tmp = parseInt(flatten_e14_data[i].price) / parseInt(d.price)
-
-            // if (tmp > 1) {
-            //     tmp = 1
-            // }
-            // console.log(tmp, parseInt(d.price))
-            // return formatMoney(d.price).toString() + " [" + (d.price / total_sum * 100).toFixed(2).toString() + "%]"
             if (parseInt(d.price) >= 1000000000) {
-                // console.log(d.price / 1000000000) + '000M'
                 return (d.price / 1000000000) + '000M' + " [" + (tmp * 100).toFixed(2).toString() + "%]"
             }
             return formatSuffixDecimal2(d.price).toString() + " [" + (tmp * 100).toFixed(2).toString() + "%]"
@@ -377,7 +283,6 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     .attr("font_family", "sans-serif")  // Font type
     .attr("font-size", "11px")  // Font size
     .attr("fill", function(d) { 
-        // return color(company_names.indexOf(d.name))
         return 'black'
     })
     .attr("transform", "translate(" + xScale.bandwidth() * 0.62 + "," + "0)");
@@ -386,7 +291,6 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     var e14 = svg.selectAll('#e14')
     .data(flatten_data)
     .enter() 
-    // .attr("class", "e14")
     .append("text")
     .text(function(d, i) {
         if (d.price !== '' &&  d.price !== '0' && d.price !== 'NOT THERE YET') {
