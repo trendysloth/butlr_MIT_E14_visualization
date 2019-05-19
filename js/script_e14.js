@@ -295,7 +295,7 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     .text(function(d, i) {
         if (d.price !== '' &&  d.price !== '0' && d.price !== 'NOT THERE YET') {
             if (flatten_e14_data[i].price !== '0') {
-                return formatSuffixDecimal2(flatten_e14_data[i].price)
+                return formatSuffixDecimal1(flatten_e14_data[i].price)
             }
         }
     })
@@ -314,17 +314,11 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     .attr("fill", function(d) { 
         return 'white'
     })
-    .attr("transform", function(d) {
-        return "translate(" + xScale.bandwidth() * 0.46 + "," + "0)"
-        // if (d.price === '0') {
-        //     let tmp = xScale.bandwidth() * 0.5 - rScale(0.000001) * 0.5
-        //     return "translate(" + tmp + "," + "0)"
-        // } 
-        // if (d.price !== 'NOT THERE YET' && d.price !== '0') {
-        //     let tmp = xScale.bandwidth() * 0.5 - rScale(d.price) * 0.5
-        //     return "translate(" +tmp + "," + "0)"
-        // }
-    });
+    .attr("text-anchor", "middle")
+    .attr("transform", function(d, i) {
+        return "translate(" + xScale.bandwidth() * 0.5 + "," + "0)"
+    })
+    
 
     /* Add Axis into SVG */
     var xAxis = d3.axisBottom(xScale).ticks(5);
