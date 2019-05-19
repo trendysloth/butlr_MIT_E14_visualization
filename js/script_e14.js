@@ -116,14 +116,14 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     var radius = Math.min(width, height) / 6
     var duration = 250;
 
-    var lineOpacity = "0.6";
-    var lineOpacityHover = "0.80";
-    var otherLinesOpacityHover = "0.1";
+    var lineOpacity = "1.0";
+    var lineOpacityHover = "1.0";
+    var otherLinesOpacityHover = "1.0";
     var lineStroke = "4px";
     var lineStrokeHover = "6px";
 
-    var circleOpacity = '0.85';
-    var circleOpacityOnLineHover = "0.25"
+    var circleOpacity = '1.0';
+    var circleOpacityOnLineHover = "1.0"
     var circleRadius = 3;
     var circleRadiusHover = 25;
 
@@ -134,6 +134,8 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     var yScale = d3.scaleLog().domain(d3.extent(y_values)).range([height, 0]);
     var rScale = d3.scaleLinear().domain(d3.extent(r_values)).range([10, 25]);
     var color = d3.scaleOrdinal(d3.schemeCategory10)
+    var color2 = d3.scaleOrdinal(d3.schemeCategory10).domain(['A', 'B', 'C', 'D', 'E'])
+    // console.log(color2('A'))
 
     // /* Add SVG */
     var svg = d3.select("#chart").append("svg")
@@ -291,7 +293,7 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     .attr("class", "circle")  
     .append("circle")
     .attr("cx", function(d, i) {
-        console.log(d)
+        // console.log(d)
         return xScale(d.date)
     })
     .attr("cy", function(d, i) {
@@ -300,7 +302,7 @@ d3.csv("js/e14participation.csv", function(datapoints) {
         }
     })
     .attr("r", function(d, i) {
-        console.log(d, flatten_e14_data[i])
+        // console.log(d, flatten_e14_data[i])
         if (d.price !== '' && d.price !== '0' && d.price !== 'NOT THERE YET') {
             if (flatten_e14_data[i].price !== '0' && flatten_e14_data[i].price !== 'NOT THERE YET') {
                 return rScale(parseInt(flatten_e14_data[i].price))
@@ -311,6 +313,32 @@ d3.csv("js/e14participation.csv", function(datapoints) {
         }
     })
     .attr("transform", "translate(" + xScale.bandwidth() / 2 + ",0)")
+    .style("fill", function(d, i) {
+        return (color2(d.name))
+    })
+    // .style('opacity', circleOpacity)
+    // .on("mouseover", function(d) {
+    //     d3.select(this)
+    //     .transition()
+    //     .duration(duration)
+    //     .attr("r", circleRadiusHover);
+    // })
+    // .on("mouseout", function(d) {
+    //     d3.select(this) 
+    //     .transition()
+    //     .duration(duration)
+    //     .attr("r", function(d, i) {
+    //         // yScale(d.price)
+    //         if (d.price !== '' && d.price !== '0' && d.price !== 'NOT THERE YET') {
+    //             if (flatten_e14_data[i].price !== '0' && flatten_e14_data[i].price !== 'NOT THERE YET') {
+    //                 return rScale(parseInt(flatten_e14_data[i].price))
+    //             } else {
+    //                 return rScale(parseInt(0.000001))
+    //             }
+                
+    //         }
+    //     });  
+    // })
     
 
 
@@ -320,15 +348,19 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     .enter()
     .append("text")
     .text(function(d, i) {
-        // console.log(accum_e14, flatten_data)
+        // console.log(flatten_e14_data)
         if (d.price !== '' &&  d.price !== '0' && d.price !== 'NOT THERE YET') {
-            let tmp = parseInt(accum_e14[i].price) / parseInt(d.price)
+            let tmp = parseInt(flatten_e14_data[i].price) / parseInt(d.price)
 
-            if (tmp > 1) {
-                tmp = 1
-            }
+            // if (tmp > 1) {
+            //     tmp = 1
+            // }
             // console.log(tmp, parseInt(d.price))
             // return formatMoney(d.price).toString() + " [" + (d.price / total_sum * 100).toFixed(2).toString() + "%]"
+            if (parseInt(d.price) >= 1000000000) {
+                // console.log(d.price / 1000000000) + '000M'
+                return (d.price / 1000000000) + '000M' + " [" + (tmp * 100).toFixed(2).toString() + "%]"
+            }
             return formatSuffixDecimal2(d.price).toString() + " [" + (tmp * 100).toFixed(2).toString() + "%]"
         }
     })
@@ -345,9 +377,10 @@ d3.csv("js/e14participation.csv", function(datapoints) {
     .attr("font_family", "sans-serif")  // Font type
     .attr("font-size", "11px")  // Font size
     .attr("fill", function(d) { 
-        return color(company_names.indexOf(d.name))
+        // return color(company_names.indexOf(d.name))
+        return 'black'
     })
-    .attr("transform", "translate(" + xScale.bandwidth() * 0.75 + "," + "0)");
+    .attr("transform", "translate(" + xScale.bandwidth() * 0.62 + "," + "0)");
 
 
     var e14 = svg.selectAll('#e14')
@@ -373,12 +406,12 @@ d3.csv("js/e14participation.csv", function(datapoints) {
         }
     })
     .attr("font_family", "sans-serif")  // Font type
-    .attr("font-size", "11px")  // Font size
+    .attr("font-size", "9px")  // Font size
     .attr("fill", function(d) { 
-        return 'black'
+        return 'white'
     })
     .attr("transform", function(d) {
-        return "translate(" + xScale.bandwidth() * 0.6 + "," + "0)"
+        return "translate(" + xScale.bandwidth() * 0.46 + "," + "0)"
         // if (d.price === '0') {
         //     let tmp = xScale.bandwidth() * 0.5 - rScale(0.000001) * 0.5
         //     return "translate(" + tmp + "," + "0)"
