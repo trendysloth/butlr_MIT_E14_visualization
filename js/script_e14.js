@@ -378,7 +378,7 @@ d3.csv("js/e14participation.csv", function(datapoints) {
         return 'black'
     })
     .attr("transform", function(d) {
-        return "translate(" + xScale.bandwidth() * -0.5 + "," + "0)"
+        return "translate(" + xScale.bandwidth() * 0.6 + "," + "0)"
         // if (d.price === '0') {
         //     let tmp = xScale.bandwidth() * 0.5 - rScale(0.000001) * 0.5
         //     return "translate(" + tmp + "," + "0)"
